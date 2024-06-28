@@ -4,14 +4,23 @@ using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 10f;
+    [SerializeField]
+    private float _speed;
+    private float _speedScaler;
     
-    public float score;
+    [SerializeField]
+    private float _minSpeed = 2f;
+    
+    
+    public float currentScore;
+    private float lastScore;
     private float _scoreScaling=0;
     private float _scoreDifferenceEnemy = 0.1f; 
 
     [SerializeField]
     private BlobFactory _blobFactory;
+    [SerializeField]
+    private EnemyFactory _enemyFactory;
     
     private Vector3 _currentPosition;
     private Vector3 _desiredPosition;
@@ -19,16 +28,23 @@ public class Player : MonoBehaviour
     private void Start()
     {
          _currentPosition = transform.position;
-        score = gameObject.transform.localScale.x;
+        currentScore = gameObject.transform.localScale.x;
+        _speedScaler = _speed;
     }
-    
-    
+
+
+    private void Update()
+    {
+        if (currentScore == lastScore) return; 
+        
+        _speed = Mathf.Max(_minSpeed, _speedScaler / Mathf.Sqrt(currentScore));
+        
+    }
 
     private void FixedUpdate()
     {
-        
         Vector3 direction = InputManager.GetDirection();
-        _desiredPosition = _currentPosition + direction * (speed * Time.deltaTime);
+        _desiredPosition = _currentPosition + direction * (_speed * Time.deltaTime);
         Move(direction);
     }
     
@@ -40,14 +56,14 @@ public class Player : MonoBehaviour
         {
             Blob blob = other.GetComponentInChildren<Blob>();
             Collect(blob);
-            score += _scoreScaling;
+            currentScore += _scoreScaling;
             
         }
         else if (other.CompareTag("Enemy"))
         {
             Enemy enemy = other.GetComponentInChildren<Enemy>();
             EnemyCollision(enemy);
-            score += _scoreScaling;
+            currentScore += _scoreScaling;
         }
         
     }
@@ -74,7 +90,7 @@ public class Player : MonoBehaviour
     private void Collect(Blob blob)
     {
         _scoreScaling += blob.score;
-        score += _scoreScaling;
+        currentScore += _scoreScaling;
         ScaleChange(_scoreScaling);
         _blobFactory.RemoveBlob(blob);
         Destroy(blob.transform.parent.gameObject);
@@ -83,18 +99,19 @@ public class Player : MonoBehaviour
     
     private void EnemyCollision(Enemy enemy)
     {
-        bool ScoreCheck = score > enemy.score + _scoreDifferenceEnemy;
+        bool ScoreCheck = currentScore > enemy.score + _scoreDifferenceEnemy;
         
         if (ScoreCheck)
         {
             _scoreScaling += enemy.score;
-            score += _scoreScaling;    
+            currentScore += _scoreScaling;    
             ScaleChange(_scoreScaling);
+            _enemyFactory.RemoveEnemy(enemy);
             Destroy(enemy.transform.parent.gameObject);
         }
         else
         {
-            ScoreCheck = enemy.score > score + _scoreDifferenceEnemy;
+            ScoreCheck = enemy.score > currentScore + _scoreDifferenceEnemy;
             if (!ScoreCheck) return;
             Destroy(gameObject);
         }

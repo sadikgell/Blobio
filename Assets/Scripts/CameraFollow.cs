@@ -24,13 +24,13 @@ public class CameraFollow : MonoBehaviour
         _offset = new Vector3(0,
                             _playerTransform.position.y + _cameraHeight ,
                               0);
-        _playerCurrentScore = _player.score;
+        _playerCurrentScore = _player.currentScore;
         _playerPreviousScore = _playerCurrentScore;
     }
     
     private void FixedUpdate()
     {
-        _playerCurrentScore = _player.score;
+        _playerCurrentScore = _player.currentScore;
         
         Vector3 desiredPosition = _playerTransform.position + _offset;
         Vector3 smoothedPosition = Vector3.Lerp(_camera.transform.position, desiredPosition, 0.125f);
@@ -44,7 +44,7 @@ public class CameraFollow : MonoBehaviour
     private void CameraPositionUpdate()
     {
         Debug.Log("camera height before"+ _cameraHeight);
-        _cameraHeight = _player.score * 3f;
+        _cameraHeight = _player.currentScore * 3f;
         Debug.Log("camera height after"+ _cameraHeight);
         _playerPreviousScore = _playerCurrentScore;
         _offset.y = _playerTransform.position.y + _cameraHeight;
