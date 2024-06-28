@@ -5,17 +5,15 @@ using UnityEngine;
 public class InputManager : MonoBehaviour
 {
     
-    // Start is called before the first frame update
-    void Start()
+    private float _horizontalInput;
+    private float _verticalInput;
+    
+    public static Vector3 GetDirection()
     {
-        
+        float verticalAxis = Input.GetAxis("Vertical");
+        float horizontalAxis = Input.GetAxis("Horizontal");
+        return new Vector3(horizontalAxis, 0, verticalAxis);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        getHr    
-        
-    }
+    
     
 }
