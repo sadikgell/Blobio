@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 788251c0609842b41be2b430e93135a9, type: 3}
   m_Name: LevelData 001
   m_EditorClassIdentifier: 
-  _WorldSizeX: 40
-  _WorldSizeZ: 40
+  _WorldSizeX: 20
+  _WorldSizeZ: 20
   _InitialBlobCount: 0
   _MaxBlobCount: 50
   _BlobSpawnInterval: 1
