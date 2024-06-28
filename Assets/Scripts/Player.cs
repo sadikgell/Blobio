@@ -12,7 +12,8 @@ public class Player : MonoBehaviour
     private float _scoreScaling=0;
     private float _scoreDifferenceEnemy = 0.1f; 
 
-    
+    [SerializeField]
+    private BlobFactory _blobFactory;
     
     private void Start()
     {
@@ -68,7 +69,7 @@ public class Player : MonoBehaviour
         _scoreScaling += blob.score;
         _score += _scoreScaling;
         ScaleChange(_scoreScaling);
-        
+        _blobFactory.RemoveBlob(blob);
         Destroy(blob.transform.parent.gameObject);
         
     }
