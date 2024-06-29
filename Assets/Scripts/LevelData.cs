@@ -12,7 +12,6 @@ public class LevelData : ScriptableObject
         
 
     [Header("Blob Settings")]
-    [SerializeField] private int _InitialBlobCount = 10;
     [SerializeField] private int _MaxBlobCount = 50;
     [SerializeField] private float _BlobSpawnInterval = 1f;
         
@@ -24,7 +23,6 @@ public class LevelData : ScriptableObject
     
     public float WorldSizeX => _WorldSizeX;
     public float WorldSizeZ => _WorldSizeZ;
-    public int InitialBlobCount => _InitialBlobCount;
     public int MaxBlobCount => _MaxBlobCount;
     public int MaxObstacleCount => _MaxObstacleCount;
     public float BlobSpawnInterval => _BlobSpawnInterval;

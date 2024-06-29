@@ -1,11 +1,19 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
     [SerializeField]
     private float _speed;
+
+    public float Speed
+    {
+        get => _speed;
+        set => _speed = value;
+    }
+
     private float _speedScaler;
     
     [SerializeField]
@@ -38,14 +46,18 @@ public class Player : MonoBehaviour
         if (currentScore == lastScore) return; 
         
         _speed = Mathf.Max(_minSpeed, _speedScaler / Mathf.Sqrt(currentScore));
-        
+
+        if (currentScore == 30)
+        {
+            SceneManager.LoadScene(3);
+        }
     }
 
     private void FixedUpdate()
     {
         Vector3 direction = InputManager.GetDirection();
         _desiredPosition = _currentPosition + direction * (_speed * Time.deltaTime);
-        Move(direction);
+        MovePlayer(direction);
     }
     
 
@@ -69,7 +81,7 @@ public class Player : MonoBehaviour
     }
     
     
-    private void Move(Vector3 direction)
+    public void MovePlayer(Vector3 direction)
     {
         if (direction == Vector3.zero)
             return;
@@ -99,11 +111,11 @@ public class Player : MonoBehaviour
     
     private void EnemyCollision(Enemy enemy)
     {
-        bool ScoreCheck = currentScore > enemy.score + _scoreDifferenceEnemy;
+        bool ScoreCheck = currentScore > enemy.currentScore + _scoreDifferenceEnemy;
         
         if (ScoreCheck)
         {
-            _scoreScaling += enemy.score;
+            _scoreScaling += enemy.currentScore;
             currentScore += _scoreScaling;    
             ScaleChange(_scoreScaling);
             _enemyFactory.RemoveEnemy(enemy);
@@ -111,11 +123,19 @@ public class Player : MonoBehaviour
         }
         else
         {
-            ScoreCheck = enemy.score > currentScore + _scoreDifferenceEnemy;
+            ScoreCheck = enemy.currentScore > currentScore + _scoreDifferenceEnemy;
             if (!ScoreCheck) return;
             Destroy(gameObject);
         }
     }
     
-    
+    public float GetScore()
+    {
+        return currentScore;
+    }
+
+    public void GameOver()
+    {
+        SceneManager.LoadScene(2);
+    }
 }

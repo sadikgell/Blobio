@@ -43,9 +43,7 @@ public class CameraFollow : MonoBehaviour
     
     private void CameraPositionUpdate()
     {
-        Debug.Log("camera height before"+ _cameraHeight);
         _cameraHeight = _player.currentScore * 3f;
-        Debug.Log("camera height after"+ _cameraHeight);
         _playerPreviousScore = _playerCurrentScore;
         _offset.y = _playerTransform.position.y + _cameraHeight;
     }
