@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -113,6 +110,10 @@ public class Enemy : MonoBehaviour
             _wanderingTimer = 0f;
         }
 
+        if (CheckForBlobNearby(_chaseDistance))
+        {
+            MoveToBlob();
+        }
         MoveEnemy(_wanderingDirection);
     }
 
@@ -178,6 +179,34 @@ public class Enemy : MonoBehaviour
         return false;
     }
 
+    private bool CheckForBlobNearby(float radius)
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
+
+        foreach (var objCollider in colliders)
+        {
+            if (objCollider.TryGetComponent<Blob>(out Blob blob))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private void MoveToBlob()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _chaseDistance);
+
+        foreach (var objCollider in colliders)
+        {
+            if (objCollider.TryGetComponent<Blob>(out Blob blob))
+            {
+                Vector3 directionToBlob = (blob.transform.position - transform.position).normalized;
+                MoveEnemy(directionToBlob);
+            }
+        }
+    }
+    
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

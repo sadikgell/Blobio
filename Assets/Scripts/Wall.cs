@@ -1,3 +1,4 @@
+using System;
 using System.Security.Cryptography;
 using UnityEngine;
 
@@ -5,7 +6,12 @@ using UnityEngine;
 public class Wall : MonoBehaviour
 {
     private EnemyFactory _enemyFactory;
-    
+
+    private void Start()
+    {
+        _enemyFactory = FindObjectOfType<EnemyFactory>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

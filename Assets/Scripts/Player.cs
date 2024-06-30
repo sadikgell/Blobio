@@ -125,14 +125,10 @@ public class Player : MonoBehaviour
         {
             ScoreCheck = enemy.currentScore > currentScore + _scoreDifferenceEnemy;
             if (!ScoreCheck) return;
-            Destroy(gameObject);
+            GameOver();
         }
     }
     
-    public float GetScore()
-    {
-        return currentScore;
-    }
 
     public void GameOver()
     {

@@ -15,10 +15,8 @@ public class UI : MonoBehaviour
     private void Update()
     {
         if(!_scoreText)return;
-        
-        _scoreText.text = "Score: " + Convert.ToInt32(_player.currentScore * 10);
-        
-        
+                
+        _scoreText.text = "Score: " + (_player.currentScore * 10).ToString("F0");
         
     }
     

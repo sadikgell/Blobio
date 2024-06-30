@@ -21,9 +21,10 @@ public class CameraFollow : MonoBehaviour
     {
         _camera = Camera.main;
         _playerTransform = _player.transform;
-        _offset = new Vector3(0,
-                            _playerTransform.position.y + _cameraHeight ,
-                              0);
+        
+        _offset = new Vector3();
+        _offset.y = _playerTransform.position.y + _cameraHeight;
+        
         _playerCurrentScore = _player.currentScore;
         _playerPreviousScore = _playerCurrentScore;
     }
